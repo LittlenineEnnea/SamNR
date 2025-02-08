@@ -1,0 +1,35 @@
+﻿<!-- MainWindow.xaml -->
+<Window x:Class="SamNR.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SamNR by Littlenine" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <ComboBox x:Name="cmbComPorts" Grid.Row="0" Margin="5,5,5,225"/>
+
+            <StackPanel Grid.Row="1" Margin="5">
+                <Button x:Name="btnMenu" Content="Menu" Margin="0,5" Height="30"
+                        Click="btnMenu_Click"/>
+                <Button x:Name="btn5G" Content="5G" Margin="0,5" Height="30"
+                        Click="btn5G_Click"/>
+                <Button x:Name="btnAbout" Content="About" Margin="0,5" Height="30"
+                        Click="btnAbout_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Right Panel -->
+        <RichTextBox x:Name="rtbLog" Grid.Column="1" Margin="5" IsReadOnly="True"
+                   FontFamily="Consolas" VerticalScrollBarVisibility="Auto"/>
+    </Grid>
+</Window>
