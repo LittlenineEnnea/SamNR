@@ -31,7 +31,7 @@ private void RefreshComPorts()
         {
             foreach (var obj in searcher.Get())
             {
-                string name = obj["Name"]?.ToString(); // 获取完整设备名称
+                string name = obj["Name"]?.ToString();
                 if (!string.IsNullOrEmpty(name) && name.Contains("(COM"))
                 {
                     portList.Add(name);
@@ -41,11 +41,11 @@ private void RefreshComPorts()
 
         Dispatcher.Invoke(() =>
         {
-            cmbComPorts.ItemsSource = null;  // 先清空以强制刷新
-            cmbComPorts.ItemsSource = portList; // 绑定数据源
+            cmbComPorts.ItemsSource = null; 
+            cmbComPorts.ItemsSource = portList;
             if (portList.Count > 0)
             {
-                cmbComPorts.SelectedIndex = 0; // 选中第一个端口
+                cmbComPorts.SelectedIndex = 0; 
             }
             else
             {
@@ -112,7 +112,7 @@ private void RefreshComPorts()
             AddLog($"> {command}");
             port.WriteLine(command);
 
-            await Task.Delay(200); // 等待响应
+            await Task.Delay(200);
             string response = port.ReadExisting();
             AddLog($"< {response.Trim()}");
         }
