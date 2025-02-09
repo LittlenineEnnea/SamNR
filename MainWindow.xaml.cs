@@ -53,10 +53,6 @@ private void RefreshComPorts()
             }
         });
     }
-
-
-
-
         private async void btnMenu_Click(object sender, RoutedEventArgs e)
         {
             if (cmbComPorts.SelectedItem == null || string.IsNullOrWhiteSpace(cmbComPorts.SelectedItem.ToString()))
@@ -103,6 +99,50 @@ private void RefreshComPorts()
             });
         }
 
+        private async void btn5Gb_Click(object sender, RoutedEventArgs e)
+        {
+            if (cmbComPorts.SelectedItem == null || string.IsNullOrWhiteSpace(cmbComPorts.SelectedItem.ToString()))
+            {
+                AddLog("No Devices");
+                return;
+            }
+
+            string fullPortName = cmbComPorts.SelectedItem.ToString();
+            string portName = System.Text.RegularExpressions.Regex.Match(fullPortName, @"\(COM\d+\)").Value.Trim('(', ')');
+
+            if (string.IsNullOrEmpty(portName) || !SerialPort.GetPortNames().Contains(portName))
+            {
+                AddLog("Device disconnected");
+                return;
+            }
+
+            string[] commands = {
+        "AT+SWATD=0",
+        "AT+ACTIVATE=0,0,0",
+        "AT+SWATD=1",
+        "AT+PRECONFG=2,WWD"
+    };
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    using (var port = new SerialPort(portName, 9600))
+                    {
+                        port.Open();
+                        foreach (var cmd in commands)
+                        {
+                            ExecuteATCommand(port, cmd).Wait();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Dispatcher.Invoke(() => AddLog($"Error: {ex.Message}"));
+                }
+            });
+        }
+
 
 
 
@@ -119,9 +159,19 @@ private void RefreshComPorts()
 
         private void btn5G_Click(object sender, RoutedEventArgs e)
         {
-            ExecuteAdbCommand("devices");
-            ExecuteAdbCommand("help");
+            MessageBoxResult result = MessageBox.Show(
+                "Plz Confirm u have open the Secret Menu via Menu button!",
+                "Confirmation",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.OK)
+            {
+                ExecuteAdbCommand("devices");
+                ExecuteAdbCommand("help");
+            }
         }
+
 
         private async void ExecuteAdbCommand(string arguments)
         {
@@ -190,4 +240,6 @@ private void RefreshComPorts()
             };
         }
     }
+
+
 }
